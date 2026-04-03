@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Club Head Dashboard - KMIT Clubs Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    /* .sidebar {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    } */
+         .sidebar{
+  background: linear-gradient(180deg, #1e3a8a 0%, #2563eb 100%);
+}
+    
+    .nav-item.active {
+      background-color: rgba(255, 255, 255, 0.08);
+      border-left: 3px solid #3b82f6;
+    }
+    
+    .stats-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid #e2e8f0;
+    }
+    
+    .content-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    }
+    
+    .modal-overlay {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
+    
+    .dashboard-section {
+      display: none;
+    }
+    
+    .dashboard-section.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-primary:hover {
+      background-color: #2563eb;
+    }
+    
+    .btn-secondary {
+      background-color: #6b7280;
+      color: white;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #4b5563;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 sidebar text-white flex flex-col">
+      <div class="p-6 font-bold text-xl flex items-center border-b border-gray-700">
+        <div class="bg-white rounded-lg p-2 mr-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        </div>
+        KMIT Clubs Hub
+      </div>
+      <nav class="flex-1 p-4 space-y-1 mt-4">
+        <a class="nav-item flex items-center p-3 rounded-lg active" data-section="dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item flex items-center p-3 rounded-lg" data-section="members">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+          </svg>
+          Members
+        </a>
+        <a class="nav-item flex items-center p-3 rounded-lg" data-section="events">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Events
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+      <!-- Header -->
+      <header class="bg-white border-b border-gray-200 p-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800">Club Head Dashboard</h1>
+            <p class="text-gray-600 mt-1">Welcome to <span id="clubName" class="font-semibold text-blue-600">Loading...</span> management</p>
+          </div>
+          <button onclick="logout()" class="btn-secondary px-4 py-2 rounded-lg font-medium flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Logout
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="p-6">
+        <!-- Dashboard Section -->
+        <div id="dashboard" class="dashboard-section active">
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="stats-card rounded-lg p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 class="text-gray-500 text-sm font-medium uppercase tracking-wide">Total Members</h2>
+                  <p class="text-3xl font-bold text-gray-800 mt-2" id="totalMembers">0</p>
+                </div>
+                <div class="bg-blue-100 rounded-full p-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="stats-card rounded-lg p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 class="text-gray-500 text-sm font-medium uppercase tracking-wide">Pending Requests</h2>
+                  <p class="text-3xl font-bold text-gray-800 mt-2" id="pendingRequestsCount">0</p>
+                </div>
+                <div class="bg-amber-100 rounded-full p-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="stats-card rounded-lg p-6">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h2 class="text-gray-500 text-sm font-medium uppercase tracking-wide">Club Events</h2>
+                  <p class="text-3xl font-bold text-gray-800 mt-2" id="eventsCount">0</p>
+                </div>
+                <div class="bg-green-100 rounded-full p-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="flex gap-4 mb-8">
+            <button onclick="openCreateEventModal()" class="btn-primary px-6 py-3 rounded-lg font-medium flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Create Event
+            </button>
+          </div>
+
+          <!-- Main Content Grid -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Pending Requests -->
+            <div class="content-card rounded-lg p-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Pending Join Requests
+              </h3>
+              <div id="pendingRequestsList" class="space-y-4">
+                <div class="text-center py-8">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-600 mx-auto"></div>
+                  <p class="text-gray-500 mt-2">Loading requests...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Club Members -->
+            <div class="content-card rounded-lg p-6">
+              <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                </svg>
+                Club Members
+              </h3>
+              <div id="membersList" class="space-y-4">
+                <div class="text-center py-8">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
+                  <p class="text-gray-500 mt-2">Loading members...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Club Events Section -->
+          <div class="content-card rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              Club Events
+            </h3>
+            <div id="eventsList">
+              <div class="text-center py-8">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p class="text-gray-500">No events scheduled</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Members Section -->
+        <div id="members" class="dashboard-section">
+          <div class="content-card rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+              </svg>
+              All Club Members
+            </h3>
+            <div id="membersListFull" class="space-y-4">
+              <!-- Members will be populated here -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Events Section -->
+        <div id="events" class="dashboard-section">
+          <div class="content-card rounded-lg p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              All Club Events
+            </h3>
+            <div class="flex gap-4 mb-6">
+              <button onclick="openCreateEventModal()" class="btn-primary px-6 py-3 rounded-lg font-medium flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Create Event
+              </button>
+            </div>
+            <div id="eventsListFull" class="space-y-4">
+              <!-- Events will be populated here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Create Event Modal -->
+  <div id="createEventModal" class="fixed inset-0 modal-overlay hidden items-center justify-center z-50 p-4">
+    <div class="bg-white p-8 rounded-lg w-full max-w-md shadow-xl">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold text-gray-800 flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+          Create New Event
+        </h3>
+        <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl">
+          ×
+        </button>
+      </div>
+      
+      <form id="eventForm">
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2 font-medium">Event Title</label>
+          <input type="text" name="title" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2 font-medium">Date & Time</label>
+          <input type="datetime-local" name="date" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2 font-medium">Description</label>
+          <textarea name="description" required rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 mb-2 font-medium">Fund Request (₹)</label>
+          <input type="number" name="fundRequest" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="0" min="0">
+        </div>
+
+        <div class="flex justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="btn-secondary px-6 py-3 rounded-lg font-medium">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary px-6 py-3 rounded-lg font-medium flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Create Event
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="api.js"></script>
+  <script src="clubhead-dashboard.js"></script>
+  <script>
+    // Navigation functionality
+    function setupNavigation() {
+      const navItems = document.querySelectorAll('.nav-item');
+      const sections = document.querySelectorAll('.dashboard-section');
+      
+      navItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const sectionId = this.getAttribute('data-section');
+          
+          // Remove active class from all nav items
+          navItems.forEach(nav => nav.classList.remove('active'));
+          
+          // Add active class to clicked nav item
+          this.classList.add('active');
+          
+          // Hide all sections
+          sections.forEach(section => section.classList.remove('active'));
+          
+          // Show the selected section
+          document.getElementById(sectionId).classList.add('active');
+          
+          // If clicking on members section, render it
+          if (sectionId === 'members' && window.dashboardData) {
+            renderMembersSection(window.dashboardData.members);
+          }
+        });
+      });
+    }
+
+    // Call setupNavigation when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      setupNavigation();
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

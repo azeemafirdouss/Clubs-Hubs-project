@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMIT Clubs Hub - Our Clubs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --kmit-primary: #2c3e50;
+            --kmit-secondary: #3498db;
+            --kmit-accent: #e74c3c;
+            --kmit-light: #ecf0f1;
+            --kmit-dark: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--kmit-primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--kmit-primary);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--kmit-accent);
+        }
+        
+        .club-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: 100%;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .club-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .club-image {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .club-card:hover .club-image {
+            transform: scale(1.05);
+        }
+        
+        .club-tag {
+            background-color: var(--kmit-secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        
+        .club-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 40px auto;
+            position: relative;
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--kmit-accent);
+        }
+        
+        .club-header {
+            margin-bottom: 20px;
+        }
+        
+        .club-details img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            height: 300px;
+            object-fit: cover;
+        }
+        
+        .club-info {
+            margin-bottom: 20px;
+        }
+        
+        .club-events {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .event-item {
+            padding: 15px;
+            border-left: 4px solid var(--kmit-secondary);
+            background-color: white;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        
+        .club-gallery {
+            margin-top: 30px;
+        }
+        
+        .gallery-item {
+            margin-bottom: 15px;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            border-radius: 8px;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .footer {
+            background-color: var(--kmit-dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer h5 {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer h5:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--kmit-accent);
+        }
+        
+        .social-icon {
+            font-size: 1.2rem;
+            color: white;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            color: var(--kmit-accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .category-btn {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--kmit-secondary);
+            color: white;
+            border-color: var(--kmit-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-users"></i>
+                KMIT Clubs Hub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+             <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.html">regsiter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="clubs.html">Clubs</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="event.html">Events</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <!-- <section class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold">KMIT Clubs</h1>
+            <p class="lead fs-3">Discover Your Passion, Explore Your Interests</p>
+            <p class="mb-4">Join one of our vibrant student clubs and be part of our thriving campus community</p>
+        </div>
+    </section> -->
+
+    <!-- Clubs Section -->
+    <section class="container mb-5">
+        <div class="section-title">
+            <h2>Our Clubs</h2>
+            <p class="text-muted">Click on any club to learn more about it</p>
+        </div>
+        
+        <!-- Search and Filter -->
+        <div class="search-container">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search clubs..." id="clubSearch">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="category-filter">
+            <div class="category-btn active" data-category="all">All Clubs</div>
+            <div class="category-btn" data-category="cultural">Cultural</div>
+            <div class="category-btn" data-category="technical">Technical</div>
+            <div class="category-btn" data-category="sports">Sports</div>
+            <div class="category-btn" data-category="literary">Literary</div>
+            <div class="category-btn" data-category="other">Other</div>
+        </div>
+        
+        <div class="row g-4" id="clubsContainer">
+            <!-- Kreeda -->
+            <div class="col-md-4 col-lg-3" data-categories="sports">
+                <div class="card club-card" onclick="openClubModal('kreeda')">
+                    <img src="images/Kreeda.png" class="card-img-top club-image" alt="Kreeda Sports Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Kreeda</h5>
+                        <p class="text-muted">Sports Club</p>
+                        <div>
+                            <span class="club-tag">Sports</span>
+                            <span class="club-tag">Fitness</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mudra -->
+            <div class="col-md-4 col-lg-3" data-categories="cultural">
+                <div class="card club-card" onclick="openClubModal('mudra')">
+                    <img src="images/Mudra.png" class="card-img-top club-image" alt="Mudra Dance Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Mudra</h5>
+                        <p class="text-muted">Dance Club</p>
+                        <div>
+                            <span class="club-tag">Cultural</span>
+                            <span class="club-tag">Performance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Aalap -->
+            <div class="col-md-4 col-lg-3" data-categories="cultural">
+                <div class="card club-card" onclick="openClubModal('aalap')">
+                    <img src="images/Aalap.png" class="card-img-top club-image" alt="Aalap Music Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Aalap</h5>
+                        <p class="text-muted">Music Club</p>
+                        <div>
+                            <span class="club-tag">Cultural</span>
+                            <span class="club-tag">Music</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Aakarshan -->
+            <div class="col-md-4 col-lg-3" data-categories="cultural">
+                <div class="card club-card" onclick="openClubModal('aakarshan')">
+                    <img src="images/akarshan.png" class="card-img-top club-image" alt="Aakarshan Fashion Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Aakarshan</h5>
+                        <p class="text-muted">Fashion Club</p>
+                        <div>
+                            <span class="club-tag">Cultural</span>
+                            <span class="club-tag">Fashion</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Public Relations -->
+            <div class="col-md-4 col-lg-3" data-categories="other">
+                <div class="card club-card" onclick="openClubModal('public-relations')">
+                    <img src="images/PR.png" class="card-img-top club-image" alt="Public Relations Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Public Relations</h5>
+                        <p class="text-muted">PR Club</p>
+                        <div>
+                            <span class="club-tag">Communication</span>
+                            <span class="club-tag">Networking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recurse -->
+            <div class="col-md-4 col-lg-3" data-categories="technical">
+                <div class="card club-card" onclick="openClubModal('recurse')">
+                    <img src="images/Recurse.png" class="card-img-top club-image" alt="Recurse Tech Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Recurse</h5>
+                        <p class="text-muted">Programming Club</p>
+                        <div>
+                            <span class="club-tag">Technical</span>
+                            <span class="club-tag">Coding</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Traces of Lenses -->
+            <div class="col-md-4 col-lg-3" data-categories="cultural">
+                <div class="card club-card" onclick="openClubModal('traces-of-lenses')">
+                    <img src="images/TOC.png" class="card-img-top club-image" alt="Traces of Lenses Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Traces of Lenses</h5>
+                        <p class="text-muted">Photography Club</p>
+                        <div>
+                            <span class="club-tag">Cultural</span>
+                            <span class="club-tag">Photography</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vachan -->
+            <div class="col-md-4 col-lg-3" data-categories="literary">
+                <div class="card club-card" onclick="openClubModal('vachan')">
+                    <img src="images/vachan.png" class="card-img-top club-image" alt="Vachan Literary Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Vachan</h5>
+                        <p class="text-muted">Literary Club</p>
+                        <div>
+                            <span class="club-tag">Literary</span>
+                            <span class="club-tag">Debate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Kmitra -->
+            <div class="col-md-4 col-lg-3" data-categories="other">
+                <div class="card club-card" onclick="openClubModal('kmitra')">
+                    <img src="images/Kmitra.png" class="card-img-top club-image" alt="Kmitra Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Kmitra</h5>
+                        <p class="text-muted">Student Support Club</p>
+                        <div>
+                            <span class="club-tag">Community</span>
+                            <span class="club-tag">Support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Organizing Committee -->
+            <div class="col-md-4 col-lg-3" data-categories="other">
+                <div class="card club-card" onclick="openClubModal('organizing-committee')">
+                    <img src="images/OC.png" class="card-img-top club-image" alt="Organizing Committee">
+                    <div class="card-body">
+                        <h5 class="card-title">Organizing Committee</h5>
+                        <p class="text-muted">Event Management</p>
+                        <div>
+                            <span class="club-tag">Events</span>
+                            <span class="club-tag">Management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Kavyalaya -->
+            <div class="col-md-4 col-lg-3" data-categories="literary">
+                <div class="card club-card" onclick="openClubModal('Kaivalya')">
+                    <img src="images/Kaivalya.png" class="card-img-top club-image" alt="Kaivalya Poetry Club">
+                    <div class="card-body">
+                        <h5 class="card-title">Kavyalaya</h5>
+                        <p class="text-muted">Poetry Club</p>
+                        <div>
+                            <span class="club-tag">Literary</span>
+                            <span class="club-tag">Poetry</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Club Modals -->
+    <div id="clubModal" class="club-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeClubModal()">&times;</span>
+            
+            <!-- Kreeda Modal -->
+            <div id="kreeda" class="club-details">
+                <div class="club-header">
+                    <h2>Kreeda - Sports Club</h2>
+                    <p class="text-muted">Building champions on and off the field</p>
+                </div>
+                
+                <!-- <img src="images/Kreeda.png" alt="Kreeda Sports Club"> -->
+                
+                <div class="club-info">
+                    <h4>About Kreeda</h4>
+                    <p>Sports are an essential part of our life. It teaches
+                         the important aspects of our life like discipline, self motivation,
+                          hard work, determination and it helps to decrease stress levels and mental illness
+                          . As our institute is having impeccable academic history let's try to improve our best in our
+                           sports field. In our institute sports need more support to develop and get excellent results.
+                            we have some ideas to increase sports interest in our Institute, we would like to conduct a sports
+                             fest and would encourage you to represent the KMIT team in their respective sport.</p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="images/kreeda1.jpg" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="images/kreeda2.jpg" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="images/kreeda3.jpg" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="images/kreeda4.jpg" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Other club modals would follow similar structure -->
+            <!-- mudra Modal -->
+            <div id="mudra" class="club-details">
+                <div class="club-header">
+                    <h2>Mudra - Dance Club</h2>
+                    <p class="text-muted">Expressing stories through graceful moves and rhythm.</p>
+                </div>
+                
+                <div class="club-info">
+                    <h4>About Mudra</h4>
+                    <p>In an age where expression is one of the most powerful tools a man can possess, dance has become 
+                        more than just a form of art or learning a series of steps to music. It is a way of moving that uses
+                         the body as an instrument of expression and communication. Through dance, one is educated about teamwork, focus and improvisation.
+                          Hence, the initiative of creating the KMIT dance club was taken. We believe in bringing talented students across all years under one roof, on one platform. 
+                          The name we chose, Mudra, is a prominent part of a dancer’s vocabulary and is one of the most significant features of Indian classical dance.
+                        </p>
+                    
+                  
+                </div>
+                
+                
+               
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="images/Mudra1.jpg" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="images/Mudra2.jpg" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="images/Mudra3.jpg" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="images/Mudra4.jpg" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+             <!-- alaap -->
+            
+            <div id="aalap" class="club-details">
+                <div class="club-header">
+                    <h2>Aalap - Music Club</h2>
+                    <p class="text-muted">Creating melodies that touch hearts and inspire souls.</p>
+                </div>
+                
+                
+                
+                <div class="club-info">
+                    <h4>About Aalap</h4>
+                    <p>The first club formed in KMIT, AALAP – The Music Club of KMIT visions in exploring the 
+                        various new aspects of music, as the tagline says #EXPLORE YOURSELF. AALAP provides the right 
+                        platform to all music aspirants and enthusiasts in not only showcasing their talent, but to
+                         also explore, innovate and implement such ideas. From live performances and interactive jams to
+                          online collaborations, AALAP loves to take challenges and expand its wings,
+                         reach out to more and more people and keep entertaining them in the World of Music.</p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Additional club details would be here -->
+
+
+            <!--  aakarshan Modal -->
+            <div id="aakarshan" class="club-details">
+                <div class="club-header">
+                    <h2>Aakarshan -  The Art Club</h2>
+                    <p class="text-muted">Where creativity meets style and confidence shines</p>
+                </div>
+                
+                
+                <div class="club-info">
+                    <h4>About Aakarshan</h4>
+                    <p>The purpose of AAKARSHAN – KMIT’s very own ART CLUB is to encourage
+                         fine art awareness. Art club is a welcoming place for the students who have a 
+                         deep passion for the visual Arts. The aim of this Art club is to represent not the outward 
+                         appearance of things, but their inner significance. Art club facilitates its members to take up 
+                         arts with greater joy, 
+                        understanding and knowledge and experiencing them as vital expressions of the human spirit..</p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- public realations Modal -->
+            <div id="public-relations" class="club-details">
+                <div class="club-header">
+                    <h2>Public - relations  - PR Club</h2>
+                    <p class="text-muted">Building strong connections and shaping communication.</p>
+                </div>
+                
+              
+                
+                <div class="club-info">
+                    <h4>About Public relations</h4>
+                    <p>The Public Relations Team leads the overall brand, 
+                        voice and image of Keshav Memorial Institute of Technology.
+                         The judicial powers of the Council lies with the President and
+                          the PR Team. This dynamic team is responsible for managing internal 
+                          and external communications to ensure that information and messages 
+                          are consistently and accurately communicated across the KMIT community
+                           including students, faculty, staff and alumni. The department also 
+                           spearheads the College’s online presence, social media outreach, marketing
+                            campaigns, press releases and editorials.
+                        </p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- recurse Modal -->
+            <div id="recurse" class="club-details">
+                <div class="club-header">
+                    <h2>Recurse - The Technical Club</h2>
+                    <p class="text-muted">Unlocking logic and innovation through the power of code.</p>
+                </div>
+                
+                
+                
+                <div class="club-info">
+                    <h4>About Recurse</h4>
+                    <p>The purpose of this club is to provide students with the opportunity, 
+                        experience, and resources to pursue a career in Computer Science and also in Electronics
+                         & Communication outside the classrooms. This club can expand upon criteria in the curriculum to assist 
+                         
+                         students in competing with their peers for enhancing their own skills. Though the main focus of this club 
+                         is to provide an emphasis on computer programming,
+                         it is intended for the club to delve into all aspects in order to prevent educational 
+                         limitations for its members.</p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- traces of lenses Modal -->
+            <div id="traces-of-lenses" class="club-details">
+                <div class="club-header">
+                    <h2>TOC - Photography Club</h2>
+                    <p class="text-muted">Capturing moments that speak louder than words.</p>
+                </div>
+                
+                
+                <div class="club-info">
+                    <h4>About TOC</h4>
+                    <p>Traces of Lenses, the photography club of KMIT aims to bring all the aspiring photographers under
+                         the same roof and continues to inspire and motivate them.They as photography club seek to display 
+                         our love of photography through constructive criticism of our peers, leisure activities that involve photography.
+                          They promote creativity through photography, to educate and improve technical skills, to share and critique 
+                          photography of peers, 
+                        to educate and improve technical skills, and to spread the love of photography throughout the campus.</p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- vachan Modal -->
+            <div id="vachan" class="club-details">
+                <div class="club-header">
+                    <h2>Vachan - The Speakers' Club</h2>
+                    <p class="text-muted">Exploring ideas through words, thoughts, and expression.</p>
+                </div>
+                
+                
+                <div class="club-info">
+                    <h4>About Vachan</h4>
+                    <p>Vachan aims to enhance and exhibit various forms of expression
+                         through speech from an individual’s perspective. The club encourages 
+                         budding voices and provides a platform for numerous speakers and their words.
+                    </p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Kmitra Modal -->
+            <div id="kmitra" class="club-details">
+                <div class="club-header">
+                    <h2>Kmitra </h2>
+                    <p class="text-muted">Spreading kindness and making a difference together.</p>
+                </div>
+                
+                <!-- <img src="" alt="Kreeda Sports Club">
+                 -->
+                <div class="club-info">
+                    <h4>About Kmitra</h4>
+                    <p>Emerging out from the tech magazine Vipassana, evolving into a monthly 
+                        magazine covering various topics to help us ‘Think, Integrate and Evolve,’
+                         rose kMitra – ‘A friend to grow up with.’ kMitra has been making progress edition
+                          by edition, revamping to give a new updated look, 
+                        with a team larger than ever, with content getting better in quality and with an expanded readership.</p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- OC Modal -->
+            <div id="organizing-committee" class="club-details">
+                <div class="club-header">
+                    <h2>Organizing committee - Event Management Club</h2>
+                    <p class="text-muted">Bringing events to life with planning and precision.</p>
+                </div>
+                
+               
+                
+                <div class="club-info">
+                    <h4>About OC</h4>
+                    <p>The Organising Committee is responsible for the entire logistics
+                         of all the events, seminars, fests and workshops or any other equivalent 
+                         conducted in the college by the Council and also allotted venues and schedules 
+                         the time for the events at club and college level. Abbreviated as OC, they work along
+                          with the Public Relations team and all the clubs of KMIT. OC is a decentralised committee which works throughout
+                         the semester to ensure less or no friction between organising and conducting any particular event.</p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="Kaivalya" class="club-details">
+                <div class="club-header">
+                    <h2>Kaivalya - The Yoga Club</h2>
+                    <p class="text-muted">Where emotions flow seamlessly into words and verses.</p>
+                </div>
+                
+              
+                
+                <div class="club-info">
+                    <h4>About Kaivalya</h4>
+                    <p>Kaivalya aims to separate stress and distractions from our fellow students by 
+                        training body, mind and soul, and by synchronizing them. 
+                        The club trains you in improving physical fitness, immunity boosting and enhances mental strength.</p>
+                    
+                  
+                </div>
+                
+                
+                
+                <div class="club-gallery">
+                    <h4>Gallery</h4>
+                    <div class="row">
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                        <div class="col-md-3 gallery-item">
+                            <img src="" alt="Sports Activity">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>KMIT Clubs Hub</h5>
+                    <p>Where Passion Meets Opportunity</p>
+                    <p>Keshav Memorial Institute of Technology, Hyderabad</p>
+                    <!-- <div class="mt-3">
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div> -->
+                </div>
+                
+                <div class="col-md-2 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white">Home</a></li>
+            <li><a href="login.html" class="text-white">Login</a></li>
+            <li><a href="register.html" class="text-white">Register</a></li>
+            <li><a href="event.html" class="text-white">Events</a></li>
+            <li><a href="about.html" class="text-white">About</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-3 mb-4">
+                    <h5>Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> clubs@kmit.edu</li>
+                        <li><i class="fas fa-phone me-2"></i> +91 9876543210</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> KMIT, Hyderabad</li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-3 mb-4">
+                    <h5>Login Portals</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="login.html">Student Login</a></li>
+                        <li><a href="login.html">Club Head Login</a></li>
+                        <li><a href="login.html">Faculty Login</a></li>
+                        <li><a href="login.html">Admin Login</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 KMIT Clubs Hub. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to open club modal
+        function openClubModal(clubId) {
+            document.getElementById('clubModal').style.display = 'block';
+            
+            // Hide all club details
+            const clubDetails = document.querySelectorAll('.club-details');
+            clubDetails.forEach(detail => {
+                detail.style.display = 'none';
+            });
+            
+            // Show the selected club details
+            document.getElementById(clubId).style.display = 'block';
+            
+            // Prevent body scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Function to close club modal
+        function closeClubModal() {
+            document.getElementById('clubModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('clubModal');
+            if (event.target === modal) {
+                closeClubModal();
+            }
+        }
+        
+        // Search functionality
+        document.getElementById('clubSearch').addEventListener('keyup', function() {
+            const searchText = this.value.toLowerCase();
+            const clubCards = document.querySelectorAll('.club-card');
+            
+            clubCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const tags = card.querySelectorAll('.club-tag');
+                let tagText = '';
+                
+                tags.forEach(tag => {
+                    tagText += tag.textContent.toLowerCase() + ' ';
+                });
+                
+                if (title.includes(searchText) || tagText.includes(searchText)) {
+                    card.parentElement.style.display = 'block';
+                } else {
+                    card.parentElement.style.display = 'none';
+                }
+            });
+        });
+        
+        // Category filter functionality
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const category = this.getAttribute('data-category');
+                const clubCards = document.querySelectorAll('.club-card');
+                
+                if (category === 'all') {
+                    clubCards.forEach(card => {
+                        card.parentElement.style.display = 'block';
+                    });
+                } else {
+                    clubCards.forEach(card => {
+                        const categories = card.parentElement.getAttribute('data-categories');
+                        if (categories.includes(category)) {
+                            card.parentElement.style.display = 'block';
+                        } else {
+                            card.parentElement.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

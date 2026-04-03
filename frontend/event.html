@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMIT Clubs Hub - Events</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --kmit-primary: #2c3e50;
+            --kmit-secondary: #3498db;
+            --kmit-accent: #e74c3c;
+            --kmit-light: #ecf0f1;
+            --kmit-dark: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--kmit-primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--kmit-primary);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--kmit-accent);
+        }
+        
+        .event-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .event-image {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .event-card:hover .event-image {
+            transform: scale(1.05);
+        }
+        
+        .event-date {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background-color: var(--kmit-accent);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        
+        .event-tag {
+            background-color: var(--kmit-secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        
+        .event-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 900px;
+            margin: 40px auto;
+            position: relative;
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--kmit-accent);
+        }
+        
+        .event-header {
+            margin-bottom: 20px;
+        }
+        
+        .event-details img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            height: 350px;
+            object-fit: cover;
+        }
+        
+        .event-info {
+            margin-bottom: 20px;
+        }
+        
+        .event-highlights {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .highlight-item {
+            padding: 10px;
+            border-left: 4px solid var(--kmit-secondary);
+            background-color: white;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        
+        .event-gallery {
+            margin-top: 30px;
+        }
+        
+        .gallery-item {
+            margin-bottom: 15px;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            border-radius: 8px;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .footer {
+            background-color: var(--kmit-dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer h5 {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer h5:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--kmit-accent);
+        }
+        
+        .social-icon {
+            font-size: 1.2rem;
+            color: white;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            color: var(--kmit-accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .category-btn {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--kmit-secondary);
+            color: white;
+            border-color: var(--kmit-secondary);
+        }
+        
+        .upcoming-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--kmit-accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .event-card .card-body {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-users"></i>
+                KMIT Clubs Hub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.html">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="clubs.html">Clubs</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link active" href="event.html">Events</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                   
+                </ul>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="display-4 fw-bold">KMIT Events</h1>
+            <p class="lead fs-3">Celebrating Creativity, Innovation & Community</p>
+            <p class="mb-4">Explore our vibrant campus events and mark your calendar for upcoming activities</p>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="container mb-5">
+        <div class="section-title">
+            <h2>Our Events</h2>
+            <p class="text-muted">Discover the diverse events happening at KMIT</p>
+        </div>
+        
+        <!-- Search and Filter -->
+        <div class="search-container">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search events..." id="eventSearch">
+                <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="category-filter">
+            <div class="category-btn active" data-category="all">All Events</div>
+            <div class="category-btn" data-category="cultural">Cultural</div>
+            <div class="category-btn" data-category="technical">Technical</div>
+            <div class="category-btn" data-category="national">National</div>
+            <div class="category-btn" data-category="festival">Festivals</div>
+            <div class="category-btn" data-category="other">Other</div>
+        </div>
+        
+        <div class="row g-4" id="eventsContainer">
+            <!-- Yoga Day 2025 -->
+            <div class="col-md-6 col-lg-4" data-categories="national">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/yoga.png" class="card-img-top event-image" alt="Yoga Day 2025">
+                        <div class="event-date">June 20, 2025</div>
+                        
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Yoga Day 2025</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">Wellness</span>
+                            <span class="event-tag">National Event</span>
+                        </div>
+                        <p class="card-text">The 11th International Yoga Day celebration with the theme "One Earth, One Health".</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('yoga-day')">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Prakalp 2025 -->
+            <div class="col-md-6 col-lg-4" data-categories="technical">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/Prakalp.png" class="card-img-top event-image" alt="Prakalp 2025">
+                        <div class="event-date">Apr 15, 2025</div>
+                        
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Prakalp'25</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">Project Expo</span>
+                            <span class="event-tag">Technical</span>
+                        </div>
+                        <p class="card-text">Annual flagship project expo showcasing innovations from first-year students.</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('prakalp')">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Saanjh 2025 -->
+            <div class="col-md-6 col-lg-4" data-categories="cultural technical">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/Saanjh.png" class="card-img-top event-image" alt="Saanjh 2025">
+                        <div class="event-date">Mar 10-12, 2025</div>
+                        
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Saanjh'25</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">Cultural Fest</span>
+                            <span class="event-tag">Technical Fest</span>
+                        </div>
+                        <p class="card-text">Prominent cultural and technical fest bringing together creativity and innovation.</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('saanjh')">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Women's Day 2025 -->
+            <div class="col-md-6 col-lg-4" data-categories="national">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/Womens.png" class="card-img-top event-image" alt="Women's Day 2025">
+                        <div class="event-date">Mar 8, 2025</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Women's Day 2025</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">Awareness</span>
+                            <span class="event-tag">Celebration</span>
+                        </div>
+                        <p class="card-text">Celebrating women's achievements and promoting gender equality.</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('womens-day')">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Republic Day 2025 -->
+            <div class="col-md-6 col-lg-4" data-categories="national">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/Republic day.png" class="card-img-top event-image" alt="Republic Day 2025">
+                        <div class="event-date">Jan 26, 2025</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Republic Day 2025</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">National</span>
+                            <span class="event-tag">Cultural</span>
+                        </div>
+                        <p class="card-text">Celebration of India's 76th Republic Day with patriotic fervor.</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('republic-day')">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Patang Utsav 2025 -->
+            <div class="col-md-6 col-lg-4" data-categories="festival">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/patangutsav.png" class="card-img-top event-image" alt="Patang Utsav 2025">
+                        <div class="event-date">Jan 12, 2025</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Patang Utsav 2025</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">Festival</span>
+                            <span class="event-tag">Cultural</span>
+                        </div>
+                        <p class="card-text">Celebration of Sankranti with kite flying and traditional performances.</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('patang-utsav')">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navraas 2024 -->
+            <div class="col-md-6 col-lg-4" data-categories="festival">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/Navaras.png" class="card-img-top event-image" alt="Navraas 2024">
+                        <div class="event-date">Oct 15, 2024</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Navraas'24</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">Festival</span>
+                            <span class="event-tag">Cultural</span>
+                        </div>
+                        <p class="card-text">Spectacular Dandya Night with traditional dance and music performances.</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('navraas')">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bathukamma Celebrations -->
+            <div class="col-md-6 col-lg-4" data-categories="festival">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/batukamma.png" class="card-img-top event-image" alt="Bathukamma Celebrations">
+                        <div class="event-date">Oct 5, 2024</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Bathukamma Celebrations</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">Festival</span>
+                            <span class="event-tag">Cultural</span>
+                        </div>
+                        <p class="card-text">Celebration of Telangana's floral festival with traditional songs and dances.</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('bathukamma')">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Teachers Day 2024 -->
+            <div class="col-md-6 col-lg-4" data-categories="other">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/teachersday.jpg" class="card-img-top event-image" alt="Teachers Day 2024">
+                        <div class="event-date">Sep 5, 2024</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Teachers Day 2024</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">Academic</span>
+                            <span class="event-tag">Celebration</span>
+                        </div>
+                        <p class="card-text">Honoring educators' dedication with special events and award ceremonies.</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('teachers-day')">View Details</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Independence Day 2024 -->
+            <div class="col-md-6 col-lg-4" data-categories="national">
+                <div class="card event-card">
+                    <div class="position-relative">
+                        <img src="images/August15.png" class="card-img-top event-image" alt="Independence Day 2024">
+                        <div class="event-date">Aug 15, 2024</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Independence Day 2024</h5>
+                        <div class="mb-3">
+                            <span class="event-tag">National</span>
+                            <span class="event-tag">Cultural</span>
+                        </div>
+                        <p class="card-text">Flag hoisting ceremonies and patriotic events fostering national pride.</p>
+                        <button class="btn btn-primary w-100" onclick="openEventModal('independence-day')">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Modals -->
+    <div id="eventModal" class="event-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEventModal()">&times;</span>
+            
+            <!-- Yoga Day Modal -->
+            <div id="yoga-day" class="event-details">
+                <div class="event-header">
+                    <h2>Yoga Day 2025</h2>
+                    <p class="text-muted"> Theme: "One Earth, One Health"</p>
+                </div>
+                
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                    <p>The 11th International Yoga Day was celebrated by the faculty of KMIT on 20th June with great eagerness and enthusiasm. The theme for the International Yoga Day 2025 is "One Earth, One Health". This year's observance emphasized the vital link between personal well-being and the health of the planet.</p>
+                    
+                    <p>The event started with a brief introduction about yoga with the resource person Ms. S. Bhavani. She demonstrated stress-relieving breathing exercises and quick workplace posture corrections which were extremely helpful. The entire session was inspiring and motivating.</p>
+                    
+                    <p>Yoga has to be imbibed as part of our regular practice to help combat many mental and physical challenges. The event concluded with felicitation of our guest Ms. S. Bhavani and a vote of thanks.</p>
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>Event Highlights</h4>
+                    <div class="highlight-item">
+                        <h6>Expert Guidance</h6>
+                        <p class="mb-0">Resource person Ms. S. Bhavani demonstrated yoga techniques</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h6>Practical Sessions</h6>
+                        <p class="mb-0">Stress-relieving breathing exercises and workplace posture corrections</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h6>Theme Focus</h6>
+                        <p class="mb-0">Emphasis on the connection between personal well-being and planetary health</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Prakalp Modal -->
+            <div id="prakalp" class="event-details">
+                <div class="event-header">
+                    <h2>Prakalp'25</h2>
+                    <p class="text-muted"> Annual Project Expo</p>
+                </div>
+                
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                    <p>PRAKALP 2025 is the annual flagship project expo of Keshav Memorial Institute of Technology, organized by first-year students. It serves as a platform where ideas from diverse fields converge to shape a better future.</p>
+                    
+                    <p>More than just an event, PRAKALP celebrates creativity, innovation, and academic excellence. Students tackle real-world challenges and apply classroom knowledge through hands-on projects.</p>
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>Expo Features</h4>
+                    <div class="highlight-item">
+                        <h6>Interdisciplinary Work</h6>
+                        <p class="mb-0">Projects across Mechanical, Electrical, Physics, Chemistry, and English</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h6>Technical Demonstration</h6>
+                        <p class="mb-0">Showcasing the technical potential of aspiring engineers</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h6>Collaborative Spirit</h6>
+                        <p class="mb-0">Highlighting teamwork and collaboration among students</p>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- Saanjh Modal -->
+            <div id="saanjh" class="event-details">
+                <div class="event-header">
+                    <h2>Saanjh'25</h2>
+                    <p class="text-muted"> </p>
+                </div>
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                  
+                    
+                    <p>Saanjh '25 was our prominent cultural and technical fest that brought together creativity and innovation.
+                         The multi-day event featured a spectacular array of activities blending arts and technology.</p>
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>Festival Highlights:</h4>
+                    <div class="highlight-item">
+                        <h6>Day 1:</h6>
+                        <p class="mb-0">Grand opening with registrations and enthusiastic participation across all events</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h6>Cultural Extravaganza:</h6>
+                        <p class="mb-0">Dance performances, drama presentations, and musical events</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h6>Technical Showcase: </h6>
+                        <p class="mb-0">Competitions and demonstrations of student innovations</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h6>NSS Food Stall: </h6>
+                        <p class="mb-0"></p>Culinary delights adding flavor to the vibrant atmosphere
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- womens day Modal -->
+            <div id="womens-day" class="event-details">
+                <div class="event-header">
+                    <h2>Women's Day 2025</h2>
+                    <!-- <p class="text-muted">March  08, 2025 </p> -->
+                </div>
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                  
+                    
+                    <p>KMIT proudly celebrates International Women's Day each year on March 8th, honoring
+                         the remarkable achievements and contributions of women in our community and beyond.
+
+                     In 2025, our NSS unit organized special events including an empowering walkathon 
+                     where participants walked together in sarees, symbolizing unity and support for women's rights.
+                      The celebration featured inspiring talks and activities focused on gender equality and women's 
+                      empowerment.</p>
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>Key Messages:</h4>
+                    <div class="highlight-item">
+                        <!-- <h6>Key Messages</h6> -->
+                        <p class="mb-0">G
+                            Celebrating women's achievements in STEM fields </p>
+                               <p> Promoting gender equality in education and workplace </p>
+                               <p>Recognizing the importance of women's leadership  </p>
+                        </div>
+               </div>
+            </div>
+
+          <!-- republic day-->
+        <div id="republic-day" class="event-details">
+                <div class="event-header">
+                    <h2>Republic Day 2025</h2>
+                    <p class="text-muted"> </p>
+                </div>
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                  
+                    
+                    <p>KMIT celebrated India's 76th Republic Day with patriotic fervor and 
+                        cultural pride. The day began with the ceremonial hoisting of the national flag,
+                         attended by our entire academic community.</p>
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>Celebration Features:</h4>
+                    <div class="highlight-item">
+                        <!-- <h6>Key Messages</h6> -->
+                        <p class="mb-0">
+                            Celebrating women's achievements in STEM fields </p>
+                               <p>Flag hoisting ceremony with national anthem
+                            Dynamic dance performance by Mudra, our dance club
+                                Patriotic speeches and cultural presentations
+                                    Community gathering symbolizing unity and national pride </p>
+                               
+                        </div>
+               </div>
+            </div>
+
+        <!-- patang utsav day-->
+        <div id="patang-utsav" class="event-details">
+                <div class="event-header">
+                    <h2>Patang utsav 2025</h2>
+                    <p class="text-muted"> </p>
+                </div>
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                  
+                    
+                    <p>KMIT's annual Patang Utsav on January 12th, 
+                        2025 brought vibrant colors to our campus as we celebrated the festival
+                         of Sankranti with traditional enthusiasm.</p>
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>Festival Highlights:</h4>
+                    <div class="highlight-item">
+                        <!-- <h6>Key Messages</h6> -->
+                        <p class="mb-0">
+                                Colorful kite flying competition with enthusiastic participation
+                                Traditional music and dance performances
+                                Collaboration between all cultural clubs (Mudra, Aalap, Aakarshan, Abhinaya, Traces of Lenses)
+                                Festive atmosphere with music, colors, and high-flying kites </p>
+                               
+                        </div>
+               </div>
+            </div>
+
+
+
+            <!-- Navraas-->
+             <div id="navraas" class="event-details">
+                <div class="event-header">
+                    <h2>Navraas 2025</h2>
+                    <p class="text-muted"> </p>
+                </div>
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                  
+                    
+                    <p>Our Navraas celebrations featured a spectacular Dandiya Night that 
+                        brought together students and faculty in a vibrant display of traditional
+                         dance and music.</p>
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>Event Features:</h4>
+                    <div class="highlight-item">
+                        <!-- <h6>Key Messages</h6> -->
+                        <p class="mb-0">G
+                           Energetic dandiya and garba performances
+                            Traditional music and festive decorations
+                                Community-building through cultural participation
+                                            One of the most anticipated events in our cultural calendar </p>
+                               
+                        </div>
+               </div>
+            </div>
+
+            <!-- batukamma-->
+            <div id="bathukamma" class="event-details">
+                <div class="event-header">
+                    <h2>Bathukamma</h2>
+                    <p class="text-muted"></p>
+                </div>
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                  
+                    
+                    <p>KMIT's Bathukamma celebrations honored Telangana's vibrant floral 
+                        festival with traditional songs, dances, and floral arrangements.
+                    </p>
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>Celebration Aspects:</h4>
+                    <div class="highlight-item">
+                        <!-- <h6>Key Messages</h6> -->
+                        <p class="mb-0">G
+                            Collaboration between NSS unit and Keshav Smarak Shiksha Samiti
+                              Traditional Bathukamma floral stack arrangements
+                              Cultural performances showcasing Telangana heritage
+                            Community participation in preserving regional traditions </p>
+                               
+                        </div>
+               </div>
+            </div>
+            
+             
+                    
+                    
+
+            <!-- teachers day-->
+             <div id="teachers-day" class="event-details">
+                <div class="event-header">
+                    <h2>Teachers Day</h2>
+                    <p class="text-muted"></p>
+                </div>
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                  
+                    
+                    
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>2024 Celebration Activities:</h4>
+                    <div class="highlight-item">
+                        <!-- <h6>Key Messages</h6> -->
+                        <p class="mb-0">G
+                            Guest Lectures: Inspiring talks by distinguished educators and industry leaders <br>
+                            Poster Presentations: Showcasing innovative teaching methodologies and student research <br>
+                            Interactive Quizzes: Engaging knowledge-sharing sessions between faculty and students <br>
+                            Award Ceremony: Recognizing outstanding teaching contributions </p>
+                               
+                        </div>
+               </div>
+            </div>
+            
+
+
+
+            <!-- independence day-->
+        <div id="independence-day" class="event-details">
+                <div class="event-header">
+                    <h2>Independence-day</h2>
+                    <p class="text-muted"> </p>
+                </div>
+                
+                
+                <div class="event-info">
+                    <h4>About the Event</h4>
+                  
+                    
+                    <p>KMIT celebrated Independence Day on August 15th,
+                         2024 with flag hoisting ceremonies and patriotic events that fostered 
+                         national pride among students and staff.</p>
+                </div>
+                
+                <div class="event-highlights">
+                    <h4>Celebration Highlights:</h4>
+                    <div class="highlight-item">
+                        <!-- <h6>Key Messages</h6> -->
+                        <p class="mb-0">G
+                            Hoisting of the national flag with full honors <br>
+                            Patriotic songs and inspiring speeches <br>
+                            Cultural performances celebrating India's diversity <br>
+                            Sports events and activities promoting unity <br>
+                            Community gathering strengthening institutional bonds
+                        </div>
+               </div>
+            </div>
+
+
+  
+            <!-- Additional event modals would follow similar structure -->
+            
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>KMIT Clubs Hub</h5>
+                    <p>Where Passion Meets Opportunity</p>
+                    <p>Keshav Memorial Institute of Technology, Hyderabad</p>
+                    <!-- <div class="mt-3">
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div> -->
+                </div>
+                
+                <div class="col-md-2 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-white">Home</a></li>
+            <li><a href="login.html" class="text-white">Login</a></li>
+            <li><a href="register.html" class="text-white">Register</a></li>
+            <li><a href="event.html" class="text-white">Events</a></li>
+            <li><a href="about.html" class="text-white">About</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-3 mb-4">
+                    <h5>Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i> clubs@kmit.edu</li>
+                        <li><i class="fas fa-phone me-2"></i> +91 9876543210</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> KMIT, Hyderabad</li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-3 mb-4">
+                    <h5>Login Portals</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Student Login</a></li>
+                        <li><a href="#">Club Head Login</a></li>
+                        <li><a href="#">Faculty Login</a></li>
+                        <li><a href="#">Admin Login</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 KMIT Clubs Hub. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Function to open event modal
+        function openEventModal(eventId) {
+            document.getElementById('eventModal').style.display = 'block';
+            
+            // Hide all event details
+            const eventDetails = document.querySelectorAll('.event-details');
+            eventDetails.forEach(detail => {
+                detail.style.display = 'none';
+            });
+            
+            // Show the selected event details
+            document.getElementById(eventId).style.display = 'block';
+            
+            // Prevent body scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Function to close event modal
+        function closeEventModal() {
+            document.getElementById('eventModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('eventModal');
+            if (event.target === modal) {
+                closeEventModal();
+            }
+        }
+        
+        // Search functionality
+        document.getElementById('eventSearch').addEventListener('keyup', function() {
+            const searchText = this.value.toLowerCase();
+            const eventCards = document.querySelectorAll('.event-card');
+            
+            eventCards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const tags = card.querySelectorAll('.event-tag');
+                let tagText = '';
+                
+                tags.forEach(tag => {
+                    tagText += tag.textContent.toLowerCase() + ' ';
+                });
+                
+                if (title.includes(searchText) || tagText.includes(searchText)) {
+                    card.parentElement.style.display = 'block';
+                } else {
+                    card.parentElement.style.display = 'none';
+                }
+            });
+        });
+        
+        // Category filter functionality
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const category = this.getAttribute('data-category');
+                const eventCards = document.querySelectorAll('.event-card');
+                
+                if (category === 'all') {
+                    eventCards.forEach(card => {
+                        card.parentElement.style.display = 'block';
+                    });
+                } else {
+                    eventCards.forEach(card => {
+                        const categories = card.parentElement.getAttribute('data-categories');
+                        if (categories.includes(category)) {
+                            card.parentElement.style.display = 'block';
+                        } else {
+                            card.parentElement.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

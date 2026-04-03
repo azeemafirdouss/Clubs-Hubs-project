@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Clubs Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f8f9fb;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+    nav {
+      background-color: #333;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .hero {
+      position: relative;
+      height: 100vh;
+      background-image: url("images/home.png");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      padding-left: 100px;
+    }
+    .hero-content {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 40px;
+      max-width: 400px;
+      border-radius: 12px;
+      opacity: 0;
+      transform: translateX(-100px);
+      transition: opacity 1s ease, transform 1s ease;
+      text-align: center;
+    }
+    .hero-content.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .hero-content h1 {
+      margin-bottom: 15px;
+      font-size: 32px;
+      color: #111;
+    }
+    .hero-content button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #e91e63;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .hero-content button:hover {
+      background-color: #d81b60;
+    }
+    .info-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 10%;
+      gap: 50px;
+      background-color: #f8f9fb;
+    }
+    .info-section img {
+      width: 40%;
+      border-radius: 12px;
+    }
+    .info-content {
+      width: 50%;
+    }
+    .info-content h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    .info-content p {
+      font-size: 18px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      color: #444;
+    }
+    .info-content .btn {
+      background-color: #e91e63;
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .info-content .btn:hover {
+      background-color: #d81b60;
+    }
+    .how-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 80px 10%;
+      gap: 50px;
+      background-color: #fff;
+    }
+    .how-text {
+      flex: 1;
+    }
+    .how-text h2 {
+      font-size: 36px;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 25px;
+      gap: 20px;
+    }
+    .step-number {
+      background-color: #f2e6ff;
+      color: #6a1b9a;
+      font-weight: 600;
+      font-size: 18px;
+      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .step-content h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .step-content p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.5;
+    }
+    .how-img {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .how-img img {
+      width: 80%;
+      border-radius: 12px;
+    }
+    .how-text button {
+      margin-top: 25px;
+      background-color: #e91e63;
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .how-text button:hover {
+      background-color: #d81b60;
+    }
+    .clubs-section {
+      text-align: center;
+      padding: 80px 10%;
+      background-color: #fff;
+    }
+    .clubs-section h2 {
+      font-size: 32px;
+      margin-bottom: 40px;
+      font-weight: 700;
+    }
+    .clubs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      justify-items: center;
+    }
+    .club-item {
+      text-align: center;
+    }
+    .club-item img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+    .club-item img:hover {
+      transform: scale(1.1);
+    }
+    .club-item h3 {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    @media (max-width: 900px) {
+      .info-section, .how-section {
+        flex-direction: column;
+        text-align: center;
+      }
+      .info-section img, .how-img img {
+        width: 80%;
+      }
+      .info-content, .how-text {
+        width: 100%;
+      }
+    }
+    /* Footer Styles */
+    .footer {
+      background-color: #22223b;
+      color: white;
+      padding: 40px 0 20px;
+      margin-top: 60px;
+    }
+    .footer h5 {
+      position: relative;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .footer h5:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background-color: #e91e63;
+    }
+    .social-icon {
+      font-size: 1.2rem;
+      color: white;
+      margin-right: 15px;
+      transition: color 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+    .social-icon:hover {
+      color: #e91e63;
+      transform: translateY(-3px);
+    }
+    .footer ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .footer ul li {
+      margin-bottom: 8px;
+    }
+    .footer ul li a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer ul li a:hover {
+      color: #e91e63;
+    }
+    .footer .container {
+      width: 90%;
+      margin: 0 auto;
+      max-width: 1400px;
+    }
+    .footer .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .footer .col-md-4,
+    .footer .col-md-2,
+    .footer .col-md-3 {
+      min-width: 220px;
+      margin-bottom: 20px;
+    }
+    .footer .col-md-4 {
+      flex: 2;
+    }
+    .footer .col-md-2,
+    .footer .col-md-3 {
+      flex: 1;
+    }
+    .footer .mt-3 {
+      margin-top: 24px;
+    }
+    .footer .copyright {
+      text-align: center;
+      padding-top: 20px;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #bbb;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 900px) {
+      .footer .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .footer .row {
+        flex-direction: column;
+        width: 100%;
+      }
+      .footer .col-md-4,
+      .footer .col-md-2,
+      .footer .col-md-3 {
+        width: 100%;
+        margin-bottom: 25px;
+        text-align: center;
+      }
+      .footer .mt-3 {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">Clubs Hub</div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="register.html">Register</a>
+      <a href="login.html">Login</a>
+      <a href="clubs.html">Clubs</a>
+      <a href="event.html">Events</a>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content" id="heroContent">
+      <h1>Welcome to Clubs Hub</h1>
+      <button onclick="document.getElementById('whatWeDo').scrollIntoView({ behavior: 'smooth' });">
+        Discover more
+      </button>
+    </div>
+  </section>
+  <!-- What We Do -->
+  <section class="info-section" id="whatWeDo">
+    <img src="images/whatwedo.png" alt="What we do" />
+    <div class="info-content">
+      <h2>What we do</h2>
+      <p>
+        KMIT Clubs Hub is a dedicated platform that connects students with campus clubs and their activities. We provide an easy way for students to discover and join the clubs they are interested in. All events are created and managed directly by the respective clubs, ensuring authentic and engaging experiences. Faculty members can view and monitor club memberships and access participant details, allowing for smooth coordination and transparency. Our goal is to bring students, clubs, and faculty together in one unified digital space to encourage active participation and vibrant campus life.
+      </p>
+      <button class="btn" onclick="document.getElementById('howItWorks').scrollIntoView({ behavior: 'smooth' });">
+        Get Started
+      </button>
+    </div>
+  </section>
+  <!-- How It Works -->
+  <section class="how-section" id="howItWorks">
+    <div class="how-text">
+      <h2>How it works</h2>
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Simple Registration</h4>
+          <p>Students, club heads, and faculty register on KMIT Clubs Hub. All details are securely stored in MongoDB for seamless access.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Secure Login</h4>
+          <p>Based on the registered credentials, users log in to their respective dashboards — Admin, Student, Club Head, or Faculty — with role-based access.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Student Engagement</h4>
+          <p>Students can browse available clubs, join the ones they like, and stay updated on upcoming events created by their clubs.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Club Event Creation</h4>
+          <p>Club heads create and manage events for their members, ensuring only relevant and verified activities are hosted.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <h4>Faculty Oversight</h4>
+          <p>Faculty members can view the list of students in each club, monitor participation, and track event details for smooth supervision.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+          <h4>Centralized Management</h4>
+          <p>All operations — from registrations to event updates — are stored and managed in one system, ensuring efficiency and transparency for everyone.</p>
+        </div>
+      </div>
+      <button onclick="document.getElementById('clubs').scrollIntoView({ behavior: 'smooth' });">
+        Get Started
+      </button>
+    </div>
+    <div class="how-img">
+      <img src="images/howitworks.png" alt="How it works" />
+    </div>
+  </section>
+  <!-- Clubs Section -->
+  <section class="clubs-section" id="clubs">
+    <h2>AVAILABLE CLUBS</h2>
+    <div class="clubs-grid">
+      <div class="club-item">
+        <img src="images/kreeda1.jpg" alt="Basketball" />
+        <h3>KREEDA</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/Mudra.png" alt="Guides & Scouts" />
+        <h3>MUDRA</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/Aalap.png" alt="Netball" />
+        <h3>AALAP</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/Aakarshan.png" alt="Drama" />
+        <h3>AAKARSHAN</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/publicrelation.png" alt="Football" />
+        <h3>PUBLIC RELATIONS</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/Recurse.png" alt="Gymnastics" />
+        <h3>RECURSE</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/TOC.png" alt="Racquet" />
+        <h3>TRACES OF LENSES</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/vachan.png" alt="Rugby" />
+        <h3>VACHAN</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/Kmitra.png" alt="Rugby" />
+        <h3>KMITRA</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/OC.png" alt="Rugby" />
+        <h3>ORGANIZING COMITTEE</h3>
+      </div>
+      <div class="club-item">
+        <img src="images/Kaivalya.png" alt="Rugby" />
+        <h3>KAVYALAYA</h3>
+      </div>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <h5>KMIT Clubs Hub</h5>
+          <p>Where Passion Meets Opportunity</p>
+          <p>Keshav Memorial Institute of Technology, Hyderabad</p>
+          <!-- <div class="mt-3">
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div> -->
+        </div>
+        <div class="col-md-2 mb-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="clubs.html">Clubs</a></li>
+            <li><a href="event.html">Events</a></li>
+            <li><a href="event.html">Gallery</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3 mb-4">
+          <h5>Contact Info</h5>
+          <ul class="list-unstyled">
+            <li><i class="fas fa-envelope me-2"></i> clubs@kmit.edu</li>
+            <li><i class="fas fa-phone me-2"></i> +91 9876543210</li>
+            <li><i class="fas fa-map-marker-alt me-2"></i> KMIT, Hyderabad</li>
+          </ul>
+        </div>
+        <div class="col-md-3 mb-4">
+          <h5>Login Portals</h5>
+          <ul class="list-unstyled">
+            <li><a href="login.html">Student Login</a></li>
+            <li><a href="login.html">Club Head Login</a></li>
+            <li><a href="login.html">Faculty Login</a></li>
+            <li><a href="login.html">Admin Login</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2023 KMIT Clubs Hub. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script>
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.getElementById("heroContent").classList.add("show");
+      }, 2000);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KMIT Clubs Hub - Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { 'sans': ['Inter', 'sans-serif'] },
+          colors: {
+            primary: '#2c3e50',
+            secondary: '#3498db',
+            accent: '#e74c3c',
+            light: '#ecf0f1',
+            dark: '#2c3e50'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .sidebar-link.active {
+      background-color: #3498db;
+      color: white;
+    }
+    .stat-card {
+      transition: transform 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body class="font-sans bg-gray-50 min-h-screen">
+
+  <!-- Navigation Header -->
+  <nav class="bg-primary text-white shadow-lg">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <i class="fas fa-users text-secondary text-xl"></i>
+        <h1 class="text-xl font-bold">KMIT Clubs Hub - Admin Dashboard</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <span id="adminName" class="font-medium">Admin</span>
+        <button onclick="logout()" class="bg-accent hover:bg-red-600 px-4 py-2 rounded text-white font-medium transition-colors">
+          <i class="fas fa-sign-out-alt mr-2"></i>Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md min-h-screen">
+      <nav class="mt-6">
+        <button onclick="showSection('dashboard')" class="sidebar-link w-full text-left py-3 px-6 hover:bg-secondary hover:text-white block transition-colors active">
+          <i class="fas fa-tachometer-alt mr-3"></i>Dashboard Overview
+        </button>
+        <button onclick="showSection('events')" class="sidebar-link w-full text-left py-3 px-6 hover:bg-secondary hover:text-white block transition-colors">
+          <i class="fas fa-calendar-check mr-3"></i>Event Management
+        </button>
+        <button onclick="showSection('users')" class="sidebar-link w-full text-left py-3 px-6 hover:bg-secondary hover:text-white block transition-colors">
+          <i class="fas fa-users-cog mr-3"></i>User Management
+        </button>
+        <button onclick="showSection('clubs')" class="sidebar-link w-full text-left py-3 px-6 hover:bg-secondary hover:text-white block transition-colors">
+          <i class="fas fa-chess-queen mr-3"></i>Club Management
+        </button>
+        <button onclick="showSection('funds')" class="sidebar-link w-full text-left py-3 px-6 hover:bg-secondary hover:text-white block transition-colors">
+          <i class="fas fa-money-bill-wave mr-3"></i>Fund Management
+        </button>
+        <button onclick="showSection('reports')" class="sidebar-link w-full text-left py-3 px-6 hover:bg-secondary hover:text-white block transition-colors">
+          <i class="fas fa-chart-bar mr-3"></i>Reports & Analytics
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+      <!-- DASHBOARD OVERVIEW -->
+      <section id="dashboard" class="space-y-8">
+        <h2 class="text-2xl font-bold text-primary mb-2">Dashboard Overview</h2>
+        <p class="text-gray-600 mb-6">Welcome to the Admin Dashboard. Here's a quick overview of the system.</p>
+        
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="stat-card bg-white shadow rounded-lg p-6 text-center border-l-4 border-blue-500">
+            <div class="text-blue-500 mb-3">
+              <i class="fas fa-chess-queen text-3xl"></i>
+            </div>
+            <p class="text-sm text-gray-500">Total Clubs</p>
+            <p id="totalClubs" class="text-2xl font-bold">--</p>
+          </div>
+          <div class="stat-card bg-white shadow rounded-lg p-6 text-center border-l-4 border-green-500">
+            <div class="text-green-500 mb-3">
+              <i class="fas fa-users text-3xl"></i>
+            </div>
+            <p class="text-sm text-gray-500">Total Members</p>
+            <p id="totalMembers" class="text-2xl font-bold">--</p>
+          </div>
+          <div class="stat-card bg-white shadow rounded-lg p-6 text-center border-l-4 border-purple-500">
+            <div class="text-purple-500 mb-3">
+              <i class="fas fa-chalkboard-teacher text-3xl"></i>
+            </div>
+            <p class="text-sm text-gray-500">Total Faculty</p>
+            <p id="totalFaculty" class="text-2xl font-bold">--</p>
+          </div>
+          <div class="stat-card bg-white shadow rounded-lg p-6 text-center border-l-4 border-yellow-500">
+            <div class="text-yellow-500 mb-3">
+              <i class="fas fa-calendar-day text-3xl"></i>
+            </div>
+            <p class="text-sm text-gray-500">Pending Events</p>
+            <p id="pendingEvents" class="text-2xl font-bold">--</p>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white shadow rounded-lg p-6">
+          <h3 class="text-xl font-bold text-primary mb-4">Recent Activity</h3>
+          <div id="recentActivity" class="space-y-3">
+            <div class="text-center py-4">
+              <p class="text-gray-500">Loading recent activity...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EVENT MANAGEMENT -->
+      <section id="events" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-primary mb-2">Event Management</h2>
+            <p class="text-gray-600">Manage all events across all clubs</p>
+          </div>
+          <div class="flex space-x-3">
+            <select id="eventFilter" onchange="filterEvents()" class="border rounded px-3 py-2">
+              <option value="all">All Events</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <button onclick="refreshEvents()" class="bg-secondary text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+              <i class="fas fa-sync-alt mr-2"></i>Refresh
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-primary text-white">
+              <tr>
+                <th class="py-3 px-4 text-left">Event Title</th>
+                <th class="py-3 px-4 text-left">Club</th>
+                <th class="py-3 px-4 text-left">Date</th>
+                <th class="py-3 px-4 text-left">Status</th>
+                <th class="py-3 px-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="eventTable" class="divide-y">
+              <tr>
+                <td colspan="5" class="py-8 text-center text-gray-500">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                  <p class="mt-2">Loading events...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- USER MANAGEMENT -->
+      <section id="users" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-primary mb-2">User Management</h2>
+            <p class="text-gray-600">Manage all users in the system</p>
+          </div>
+          <div class="flex space-x-3">
+            <select id="userFilter" onchange="filterUsers()" class="border rounded px-3 py-2">
+              <option value="all">All Users</option>
+              <option value="student">Students</option>
+              <option value="faculty">Faculty</option>
+              <option value="clubhead">Club Heads</option>
+            </select>
+            <button onclick="refreshUsers()" class="bg-secondary text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+              <i class="fas fa-sync-alt mr-2"></i>Refresh
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-primary text-white">
+              <tr>
+                <th class="py-3 px-4 text-left">Username</th>
+                <th class="py-3 px-4 text-left">Name</th>
+                <th class="py-3 px-4 text-left">Role</th>
+                <th class="py-3 px-4 text-left">Email</th>
+                <th class="py-3 px-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userTable" class="divide-y">
+              <tr>
+                <td colspan="5" class="py-8 text-center text-gray-500">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                  <p class="mt-2">Loading users...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- CLUB MANAGEMENT -->
+      <section id="clubs" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-primary mb-2">Club Management</h2>
+            <p class="text-gray-600">Manage all clubs and their details</p>
+          </div>
+          <button onclick="refreshClubs()" class="bg-secondary text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+            <i class="fas fa-sync-alt mr-2"></i>Refresh
+          </button>
+        </div>
+
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-primary text-white">
+              <tr>
+                <th class="py-3 px-4 text-left">Club Name</th>
+                <th class="py-3 px-4 text-left">Club Head</th>
+                <th class="py-3 px-4 text-left">Members</th>
+                <th class="py-3 px-4 text-left">Description</th>
+                <th class="py-3 px-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="clubTable" class="divide-y">
+              <tr>
+                <td colspan="5" class="py-8 text-center text-gray-500">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                  <p class="mt-2">Loading clubs...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- FUND MANAGEMENT -->
+      <section id="funds" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-primary mb-2">Fund Management</h2>
+            <p class="text-gray-600">Manage and release funds for approved events</p>
+          </div>
+          <button onclick="refreshFunds()" class="bg-secondary text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors">
+            <i class="fas fa-sync-alt mr-2"></i>Refresh
+          </button>
+        </div>
+
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-primary text-white">
+              <tr>
+                <th class="py-3 px-4 text-left">Event Title</th>
+                <th class="py-3 px-4 text-left">Club</th>
+                <th class="py-3 px-4 text-left">Requested Funds</th>
+                <th class="py-3 px-4 text-left">Status</th>
+                <th class="py-3 px-4 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="fundTable" class="divide-y">
+              <tr>
+                <td colspan="5" class="py-8 text-center text-gray-500">
+                  <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                  <p class="mt-2">Loading fund requests...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- REPORTS & ANALYTICS -->
+      <section id="reports" class="hidden space-y-6">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-2xl font-bold text-primary mb-2">Reports & Analytics</h2>
+            <p class="text-gray-600">Generate detailed reports and view system analytics</p>
+          </div>
+          <div class="flex space-x-3">
+            <button onclick="generateReport('pdf')" class="bg-accent text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+              <i class="fas fa-file-pdf mr-2"></i>Export PDF
+            </button>
+            <button onclick="generateReport('csv')" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
+              <i class="fas fa-file-csv mr-2"></i>Export CSV
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-xl font-bold text-primary mb-4">Club Participation</h3>
+            <div id="clubParticipationChart" class="h-64 flex items-center justify-center">
+              <p class="text-gray-500">Chart will be displayed here</p>
+            </div>
+          </div>
+          <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-xl font-bold text-primary mb-4">Event Status Distribution</h3>
+            <div id="eventStatusChart" class="h-64 flex items-center justify-center">
+              <p class="text-gray-500">Chart will be displayed here</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6">
+          <h3 class="text-xl font-bold text-primary mb-4">System Statistics</h3>
+          <div id="reportContainer" class="text-gray-700">
+            <p>Reports will be generated here...</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modals -->
+  <div id="fundModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg w-96">
+      <h3 class="text-lg font-bold mb-4">Release Funds</h3>
+      <form id="fundForm">
+        <input type="hidden" id="fundEventId">
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2">Event</label>
+          <p id="fundEventTitle" class="font-semibold"></p>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 mb-2">Amount (₹)</label>
+          <input type="number" id="fundAmount" required class="w-full p-2 border rounded" min="0" step="100">
+        </div>
+        <div class="flex justify-end gap-3">
+          <button type="button" onclick="closeFundModal()" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+          <button type="submit" class="bg-secondary text-white px-4 py-2 rounded">Release Funds</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="api.js"></script>
+  <script src="admin-dashboard.js"></script>
+</body>
+</html>

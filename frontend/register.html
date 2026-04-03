@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registration Page</title>
+  <style>
+   :root {
+  --kmit-primary: #2c3e50;
+  --kmit-secondary: #3498db;
+  --kmit-accent: #e74c3c;
+  --kmit-light: #ecf0f1;
+  --kmit-dark: #2c3e50;
+}
+
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f8fafc, #eef3f7);
+  color: #333;
+}
+
+/* Navbar Styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background-color: var(--kmit-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  color: white;
+  padding-left: 230px;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+  margin: 0;
+  padding-right: 230px;
+}
+
+.navbar ul li a {
+  color: gainsboro;
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.navbar ul li a:hover {
+  color: var(--kmit-accent);
+}
+
+/* Page Center */
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 120px;
+}
+
+/* Container (Card) */
+.container {
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 420px;
+  padding: 40px 36px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.container h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.container p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+/* Form labels and inputs */
+label {
+  display: block;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+select,
+input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 10px;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+  border-color: var(--kmit-secondary);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+}
+
+/* Hints */
+small.hint {
+  color: #6b7280;
+  font-size: 12px;
+  display: block;
+  margin-top: -4px;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #3ba4e0, #1f6ea5);
+  transform: scale(1.03);
+}
+
+button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Error and success messages */
+.error-message {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 6px;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.success-message {
+  color: #00c851;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Smooth transition for role-specific fields */
+#studentFields,
+#facultyFields,
+#clubHeadFields,
+#adminFields {
+  display: none;
+  animation: fadeIn 0.3s ease;
+  text-align: left;
+  margin-top: 8px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="#" class="logo">KMIT Clubs Hub</a>
+    
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="register.html">Register</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="clubs.html">Clubs</a></li>
+      <li><a href="event.html">Events</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+  <div class="page">
+    <div class="container">
+      <h2>Registration</h2>
+      <form id="registrationForm" autocomplete="off" novalidate>
+        <label for="role">Select Role:</label>
+        <select id="role" name="role" required>
+          <option value="">-- Select --</option>
+          <option value="student">Student</option>
+          <option value="clubhead">Club Head</option>
+          <option value="faculty">Faculty</option>
+          <!-- <option value="admin">Admin</option> -->
+        </select>
+
+        <!-- Student Fields -->
+        <div id="studentFields" style="display:none;">
+          <label for="studentUsername">Student Roll No:</label>
+          <input type="text" id="studentUsername" name="studentUsername" placeholder="22BD1A05A4"
+                 minlength="10" maxlength="10" pattern="^(22|23|24|25)BD1A05[A-G][0-9]$"
+                 oninput="validateStudentRollNo(this)"/>
+          <small class="hint">Format: 22/23/24/25 + BD1A05 + A–G + digit (e.g., 23BD1A05C7)</small>
+          <span class="error-message" id="studentUsernameError"></span>
+
+          <label for="studentPassword">Password:</label>
+          <input type="password" id="studentPassword" name="studentPassword"
+                 minlength="10" maxlength="10" oninput="validateStudentPassword(this)"/>
+          <small class="hint">Must be exactly same as Roll No (10 chars)</small>
+          <span class="error-message" id="studentPasswordError"></span>
+        </div>
+
+        <!-- Admin Fields -->
+        <div id="adminFields" style="display:none;">
+          <label for="adminId">Admin ID:</label>
+          <input type="text" id="adminId" name="adminId" placeholder="admin123" 
+                 pattern="^[a-zA-Z0-9]{4,20}$" oninput="validateAdminId(this)" required />
+          <span class="error-message" id="adminIdError"></span>
+
+          <label for="adminPassword">Admin Password:</label>
+          <input type="password" id="adminPassword" name="adminPassword" 
+                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$"
+                 oninput="validateAdminPassword(this)" required />
+          <small class="hint">At least 8 characters with upper, lower, number, and special character</small>
+          <span class="error-message" id="adminPasswordError"></span>
+        </div>
+
+        <!-- Club Head Fields -->
+   <!-- Club Head Fields -->
+<!-- Club Head Fields -->
+<div id="clubHeadFields" style="display:none;">
+    <label for="clubUsername">Club Username:</label>
+    <input type="text" id="clubUsername" name="clubUsername" placeholder="Mudra-Head"/>
+    <small class="hint">Format: Clubname-Head (e.g., Mudra-Head)</small>
+
+    <label for="clubPassword">Password:</label>
+    <input type="password" id="clubPassword" name="clubPassword"/>
+    <small class="hint">At least 8 characters with upper, lower, number, and special character</small>
+</div>
+        <!-- Faculty Fields -->
+        <div id="facultyFields" style="display:none;">
+     <label for="facultyName">Faculty Name:</label>
+     <input type="text" id="facultyName" name="facultyName" placeholder="Azeemafirdous"
+       pattern="^[A-Za-z]{1,20}$" oninput="validateFacultyName(this)"
+       title="Alphabets only, no spaces, max 20" required maxlength="20" tabindex="1" />
+          <small class="hint">Alphabets only (A–Z), no spaces, max 20</small>
+          <span class="error-message" id="facultyNameError"></span>
+
+     <label for="facultyEmail">Faculty Email:</label>
+     <input type="text" id="facultyEmail" name="facultyEmail" placeholder="azeemafirdous090@gmail.com"
+       pattern="^[A-Za-z]{5,15}[0-9]{0,3}@gmail\.com$" oninput="validateFacultyEmail(this)"
+       title="5-15 letters + optional 0-3 digits + @gmail.com" required maxlength="40" tabindex="2" />
+          <small class="hint">5-15 letters + optional 0-3 digits + @gmail.com</small>
+          <span class="error-message" id="facultyEmailError"></span>
+
+     <label for="facultyPassword">Password:</label>
+     <input type="password" id="facultyPassword" name="facultyPassword"
+       pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{10,}$"
+       oninput="validateFacultyPassword(this)" required maxlength="64" tabindex="3" />
+          <small class="hint">Min 10 chars: 1 uppercase, 1 lowercase, 1 number, 1 special character</small>
+          <span class="error-message" id="facultyPasswordError"></span>
+        </div>
+
+        <!-- SUBMIT BUTTON AND MESSAGE INSIDE THE FORM -->
+        <button type="submit" id="submitBtn">Register</button>
+        <div id="formMessage" class="error-message" style="text-align: center; margin-top: 10px;"></div>
+      </form> <!-- CLOSING FORM TAG -->
+    </div>
+  </div>
+
+  <script>
+    // Role selection handler
+    const roleSelect = document.getElementById("role");
+    const studentFields = document.getElementById("studentFields");
+    const clubHeadFields = document.getElementById("clubHeadFields");
+    const facultyFields = document.getElementById("facultyFields");
+    const adminFields = document.getElementById("adminFields");
+    const formMessage = document.getElementById("formMessage");
+
+    roleSelect.addEventListener("change", () => {
+        [studentFields, clubHeadFields, facultyFields, adminFields].forEach(el => {
+            el.style.display = "none";
+            // Clear all fields when switching roles
+            const inputs = el.querySelectorAll('input');
+            inputs.forEach(input => input.value = '');
+        });
+        formMessage.textContent = '';
+        
+        if (roleSelect.value === "student") studentFields.style.display = "block";
+        if (roleSelect.value === "clubhead") clubHeadFields.style.display = "block";
+        if (roleSelect.value === "faculty") facultyFields.style.display = "block";
+        if (roleSelect.value === "admin") adminFields.style.display = "block";
+
+        // Focus the first input inside the visible section
+        const visibleSection = [studentFields, clubHeadFields, facultyFields, adminFields].find(s => s.style.display === 'block');
+        if (visibleSection) {
+      const firstInput = visibleSection.querySelector('input, select');
+      if (firstInput) firstInput.focus();
+        }
+    });
+
+  // Populate clubs dropdown (hidden input clubUsername will be set)
+  async function loadClubs() {
+    const sel = document.getElementById('clubSelect');
+    const manual = document.getElementById('clubManualInput');
+    try {
+      const res = await fetch('/clubs');
+      const clubs = await res.json();
+
+      if (!Array.isArray(clubs) || clubs.length === 0) {
+        // No clubs available — show manual input so user can type club name
+        sel.style.display = 'none';
+        manual.style.display = 'block';
+        manual.addEventListener('input', () => {
+          const val = manual.value.trim();
+          document.getElementById('clubUsername').value = val ? `${val}-head` : '';
+        });
+        return;
+      }
+
+      // Populate dropdown and add an "Other" option to allow manual typing
+      sel.innerHTML = '<option value="">-- Select club --</option>' + clubs.map(c => `\n                <option value="${c.name}">${c.name} (${c.slug})</option>`).join('') + '\n                <option value="__other__">Other (type manually)</option>';
+
+      sel.addEventListener('change', () => {
+        const clubName = (sel.value || '').trim();
+        if (clubName === '__other__') {
+          // show manual input
+          manual.style.display = 'block';
+          manual.focus();
+          document.getElementById('clubUsername').value = '';
+        } else {
+          manual.style.display = 'none';
+          // avoid double '-head' if the clubName already includes it
+          const username = clubName.match(/-head$/i) ? clubName : (clubName ? `${clubName}-head` : '');
+          document.getElementById('clubUsername').value = username;
+        }
+      });
+
+      // Wire manual input in case user switches to Other
+      manual.addEventListener('input', () => {
+        const raw = manual.value.trim();
+        // If user already typed '-head', don't add another
+        const username = raw.match(/-head$/i) ? raw : (raw ? `${raw}-head` : '');
+        document.getElementById('clubUsername').value = username;
+      });
+    } catch (err) {
+      console.error('Failed to load clubs', err);
+      // On error, hide select and show manual input so user can still register
+      sel.style.display = 'none';
+      const manual = document.getElementById('clubManualInput');
+      manual.style.display = 'block';
+      manual.addEventListener('input', () => {
+        const raw = manual.value.trim();
+        const username = raw.match(/-head$/i) ? raw : (raw ? `${raw}-head` : '');
+        document.getElementById('clubUsername').value = username;
+      });
+    }
+  }
+  document.addEventListener('DOMContentLoaded', loadClubs);
+
+    // Validation functions - ONLY FOR STUDENT, ADMIN, FACULTY
+    function validateStudentRollNo(input) {
+        const errorSpan = document.getElementById('studentUsernameError');
+        const pattern = /^(22|23|24|25)BD1A05[A-G][0-9]$/;
+        
+        if (!pattern.test(input.value)) {
+            errorSpan.textContent = 'Invalid Roll No format. Use: 23BD1A05C7';
+            return false;
+        } else {
+            errorSpan.textContent = '';
+            return true;
+        }
+    }
+
+    function validateStudentPassword(input) {
+        const errorSpan = document.getElementById('studentPasswordError');
+        const rollNo = document.getElementById('studentUsername').value;
+        
+        if (input.value !== rollNo) {
+            errorSpan.textContent = 'Password must match Roll No';
+            return false;
+        } else {
+            errorSpan.textContent = '';
+            return true;
+        }
+    }
+
+    function validateAdminId(input) {
+        const errorSpan = document.getElementById('adminIdError');
+        const pattern = /^[a-zA-Z0-9]{4,20}$/;
+        
+        if (!pattern.test(input.value)) {
+            errorSpan.textContent = 'Admin ID must be 4-20 alphanumeric characters';
+            return false;
+        } else {
+            errorSpan.textContent = '';
+            return true;
+        }
+    }
+
+    function validateAdminPassword(input) {
+        const errorSpan = document.getElementById('adminPasswordError');
+        const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+        
+        if (!pattern.test(input.value)) {
+            errorSpan.textContent = 'Password must contain uppercase, lowercase, number, and special character';
+            return false;
+        } else {
+            errorSpan.textContent = '';
+            return true;
+        }
+    }
+
+    function validateFacultyName(input) {
+        const errorSpan = document.getElementById('facultyNameError');
+        const pattern = /^[A-Za-z]{1,20}$/;
+        
+        if (!pattern.test(input.value)) {
+            errorSpan.textContent = 'Name must contain only letters (1-20 characters)';
+            return false;
+        } else {
+            errorSpan.textContent = '';
+            return true;
+        }
+    }
+
+    function validateFacultyEmail(input) {
+        const errorSpan = document.getElementById('facultyEmailError');
+        const pattern = /^[A-Za-z]{5,15}[0-9]{0,3}@gmail\.com$/;
+        
+        if (!pattern.test(input.value)) {
+            errorSpan.textContent = 'Format: 5-15 letters + optional digits + @gmail.com';
+            return false;
+        } else {
+            errorSpan.textContent = '';
+            return true;
+        }
+    }
+
+    function validateFacultyPassword(input) {
+        const errorSpan = document.getElementById('facultyPasswordError');
+        const pattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).{10,}$/;
+        
+        if (!pattern.test(input.value)) {
+            errorSpan.textContent = 'Min 10 chars: uppercase, lowercase, number, special character';
+            return false;
+        } else {
+            errorSpan.textContent = '';
+            return true;
+        }
+    }
+
+    // Form submission with validation
+    document.getElementById("registrationForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        formMessage.textContent = '';
+        
+        const role = roleSelect.value;
+        let isValid = true;
+
+        // Validate based on role - NO VALIDATION FOR CLUB HEAD
+        if (role === "student") {
+            isValid = validateStudentRollNo(document.getElementById('studentUsername')) && 
+                     validateStudentPassword(document.getElementById('studentPassword'));
+        } else if (role === "admin") {
+            isValid = validateAdminId(document.getElementById('adminId')) && 
+                     validateAdminPassword(document.getElementById('adminPassword'));
+        } else if (role === "clubhead") {
+            // ✅ NO VALIDATION - JUST CHECK IF FIELDS ARE NOT EMPTY
+            const clubUsername = document.getElementById('clubUsername');
+            const clubPassword = document.getElementById('clubPassword');
+            isValid = clubUsername.value.trim() !== '' && clubPassword.value.trim() !== '';
+            if (!isValid) {
+                formMessage.textContent = 'Please fill in all fields';
+                return;
+            }
+        } else if (role === "faculty") {
+            isValid = validateFacultyName(document.getElementById('facultyName')) && 
+                     validateFacultyEmail(document.getElementById('facultyEmail')) && 
+                     validateFacultyPassword(document.getElementById('facultyPassword'));
+        }
+
+        if (!isValid) {
+            formMessage.textContent = 'Please fix the validation errors above.';
+            return;
+        }
+
+        // Trim visible input values to avoid accidental leading/trailing spaces
+        [studentFields, clubHeadFields, facultyFields, adminFields].forEach(section => {
+          if (section.style.display === 'block') {
+            section.querySelectorAll('input').forEach(i => i.value = i.value.trim());
+            const sel = section.querySelector('select');
+            if (sel) sel.value = sel.value.trim();
+          }
+        });
+
+        // Prepare data for submission
+        const formData = new FormData(this);
+        const data = {
+            role: formData.get("role")
+        };
+        
+        if (data.role === "student") {
+            data.studentUsername = formData.get("studentUsername");
+            data.studentPassword = formData.get("studentPassword");
+    } else if (data.role === "clubhead") {
+      // Normalize clubUsername (trim and collapse duplicate '-head')
+      let cu = (formData.get("clubUsername") || '').trim();
+      cu = cu.replace(/(-head)+$/i, '-head');
+      data.clubUsername = cu;
+      data.clubPassword = formData.get("clubPassword");
+        } else if (data.role === "faculty") {
+            data.name = formData.get("facultyName");
+            data.facultyEmail = formData.get("facultyEmail");
+            data.facultyPassword = formData.get("facultyPassword");
+        } else if (data.role === "admin") {
+            data.adminId = formData.get("adminId");
+            data.adminPassword = formData.get("adminPassword");
+        }
+
+        console.log("Sending registration data:", data);
+        
+        // Disable submit button
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Registering...';
+
+        fetch("http://localhost:5000/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.message && data.message.includes("✅")) {
+                formMessage.style.color = '#00C851';
+                formMessage.textContent = data.message;
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1500);
+            } else {
+                formMessage.style.color = 'red';
+                formMessage.textContent = data.error || "Registration failed";
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            formMessage.style.color = 'red';
+            formMessage.textContent = "Registration failed. Please try again.";
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Register';
+        });
+    });
+</script>
+</body>
+</html>
