@@ -26,9 +26,13 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 // MONGO_URI=mongodb+srv://yourusername:yourpassword@cluster0.xxx.mongodb.net/kmit_club_azeem
 // Configure 
 const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-for-testing";
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/kmit_club_azeem";
+const MONGO_URI = process.env.MONGO_URI ;
 app.use(bodyParser.json());
 app.use(cors());
+if (!MONGO_URI) {
+  console.error("❌ MONGO_URI is missing!");
+  process.exit(1);
+}
 
 // Serve the frontend files from the frontend/ folder so you can open pages at
 // http://localhost:5000/register.html and avoid file:// origin / CORB issues.
@@ -40,7 +44,7 @@ mongoose.connect(MONGO_URI)
 .then(() => console.log("✅ MongoDB connected"))
 .catch(err => console.error("❌ MongoDB connection error:", err));
 
-// Simple health endpoint to verify server is up
+// Simple health endpoint to verify server is up    
 // app.get('/', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
