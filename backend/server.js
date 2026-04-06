@@ -20,14 +20,19 @@ const Event = require('./models/eventModel');
 const app = express();
 
 // Configure 
-const JWT_SECRET = process.env.JWT_SECRET;
+// const JWT_SECRET = process.env.JWT_SECRET;
+// // const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/kmit_club_azeem";
+// MONGO_URI=mongodb+srv://yourusername:yourpassword@cluster0.xxx.mongodb.net/kmit_club_azeem
+// Configure 
+const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-for-testing";
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/kmit_club_azeem";
 app.use(bodyParser.json());
 app.use(cors());
 
 // Serve the frontend files from the frontend/ folder so you can open pages at
 // http://localhost:5000/register.html and avoid file:// origin / CORB issues.
-app.use(express.static(path.join(__dirname, '..', 'frontend')));
+// app.use(express.static(path.join(__dirname, '..', 'frontend')));
+app.use(express.static(path.join(__dirname, 'frontend')));
 
 // MongoDB connection
 mongoose.connect(MONGO_URI)
