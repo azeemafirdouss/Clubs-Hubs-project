@@ -29,10 +29,6 @@ const JWT_SECRET = process.env.JWT_SECRET || "fallback-secret-for-testing";
 const MONGO_URI = process.env.MONGO_URI ;
 app.use(bodyParser.json());
 app.use(cors());
-if (!MONGO_URI) {
-  console.error("❌ MONGO_URI is missing!");
-  process.exit(1);
-}
 
 // Serve the frontend files from the frontend/ folder so you can open pages at
 // http://localhost:5000/register.html and avoid file:// origin / CORB issues.
