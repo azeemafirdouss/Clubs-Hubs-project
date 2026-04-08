@@ -244,7 +244,7 @@ function studentLogin() {
   const username = document.getElementById("rollNo").value;
   const password = document.getElementById("studentPassword").value;
 
-  fetch("http://localhost:5000/login", {
+  fetch("https://clubs-hubs-projectazeema.onrender.com/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ role: "student", username, password })
@@ -281,7 +281,7 @@ function facultyLogin() {
  const username = document.getElementById("facultyId").value;
   const password = document.getElementById("facultyPassword").value;
 
-  fetch("http://localhost:5000/login", {
+  fetch("https://clubs-hubs-projectazeema.onrender.com/login"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ role: "faculty", username, password })
@@ -315,7 +315,7 @@ function adminLogin() {
   const username = document.getElementById("adminId").value;
   const password = document.getElementById("adminPassword").value;
 
-  fetch("http://localhost:5000/login", {
+  fetch("https://clubs-hubs-projectazeema.onrender.com/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ role: "admin", username, password })
@@ -348,7 +348,7 @@ function clubheadLogin() {
   const username = document.getElementById("clubheadId").value;
   const password = document.getElementById("clubheadPassword").value;
 
-  fetch("http://localhost:5000/login", {
+  fetch("https://clubs-hubs-projectazeema.onrender.com/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ role: "clubhead", username, password })
