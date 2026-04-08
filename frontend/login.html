@@ -281,7 +281,7 @@ function facultyLogin() {
  const username = document.getElementById("facultyId").value;
   const password = document.getElementById("facultyPassword").value;
 
-  fetch("https://clubs-hubs-projectazeema.onrender.com/login"), {
+  fetch("https://clubs-hubs-projectazeema.onrender.com/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ role: "faculty", username, password })
